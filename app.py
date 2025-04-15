@@ -2,6 +2,7 @@ from flask import Flask, render_template, request
 import yfinance as yf
 import datetime
 import pytz
+import requests
 
 app = Flask(__name__)
 
@@ -44,6 +45,9 @@ def get_stock_info(symbol):
             'change': f"{sign}{price_change:.2f}",
             'percent_change': f"{sign}{percent_change:.2f}%"
         }
+    except requests.exceptions.RequestException as re:
+        print(f"Network error: {re}")
+        return None
     except Exception as e:
         print(f"Error retrieving stock information: {e}")
         return None
